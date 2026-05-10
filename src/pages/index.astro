@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Wade Nairn — Frontend Engineer & Creative Developer">
+  <!-- Hero -->
+  <section class="h-screen bg-[#0d0d0d] flex flex-col justify-center px-16 hero-fade">
+    <h1 class="text-white font-bold tracking-tight text-[clamp(3rem,7vw,6rem)] leading-none">
+      Wade Nairn
+    </h1>
+    <div class="mt-6 space-y-1.5">
+      <p class="text-white/75 text-[clamp(1rem,2vw,1.5rem)]">Software Engineer</p>
+      <p class="text-white/60 text-[clamp(0.875rem,1.5vw,1.25rem)]">Brisbane, Australia</p>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="content-section">
+    <span class="section-label">About</span>
+    <div class="prose">
+      <p>I'm a software engineer based in Brisbane with close to a decade of experience across startups, agencies, and enterprise teams in Australia, the UK, and remotely. I've led teams, architected platforms, and shipped products — from design systems and component libraries to full-stack applications and API integrations.</p>
+      <p>My focus is on the frontend: React, Vue, TypeScript, and the craft of building interfaces that are fast, accessible, and well considered. I'm equally comfortable working across the stack, managing DevOps pipelines, or leading a small team through a product build. I care about the details — smooth interactions, accessible interfaces, and code that's as considered as the product it ships.</p>
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section class="content-section">
+    <span class="section-label">Work</span>
+    <p class="companies">Currently at Lite n' Easy. Previously I've worked with Shine Lawyers, WooliesX, SportsDash, Adventus.io, Bionic, Infinite Software and Nissan Australia.</p>
+  </section>
+
+  <!-- Projects -->
+  <section class="content-section projects-section">
+    <span class="section-label">Projects</span>
+    <div class="prose">
+      <p><a href="https://whiskymap.com.au" target="_blank" rel="noopener noreferrer">whiskymap.com.au</a></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-fade {
+    opacity: 0;
+    animation: hero-in 0.6s ease-out 1s forwards;
+  }
+
+  @keyframes hero-in {
+    to { opacity: 1; }
+  }
+
+  .content-section {
+    background: #0d0d0d;
+    padding: 5rem 4rem;
+    max-width: 680px;
+  }
+
+  .section-label {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1.75rem;
+  }
+
+  .prose p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+  }
+
+  .prose p:last-child {
+    margin-bottom: 0;
+  }
+
+  .projects-section {
+    padding-bottom: 25vh;
+  }
+
+  .prose a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(255, 255, 255, 0.25);
+    transition: text-decoration-color 0.15s ease;
+  }
+
+  .prose a:hover {
+    text-decoration-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .companies {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .hero-fade h1        { font-size: 3.75rem !important; }
+    .hero-fade div p:first-child { font-size: 1.25rem !important; }
+    .hero-fade div p:last-child  { font-size: 1.1rem  !important; }
+
+    .prose p    { font-size: 1.25rem; }
+    .companies  { font-size: 1.25rem; }
+    .section-label { font-size: 0.875rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-fade {
+      animation: none;
+      opacity: 1;
+    }
+  }
+</style>

@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+function articleHref(entry: { slug: string }) {
+  const slug = entry.slug.replace(/^\/?articles\//, '');
+  return `/articles/${slug}`;
+}
+
+const allArticles = await getCollection('articles');
+const sorted = allArticles.sort((a, b) => a.data.publishOrder - b.data.publishOrder);
+
+const categories = ['General', 'Technical', 'AI Coding', 'Creative', 'AI Agents'] as const;
+
+const articlesByCategory = Object.fromEntries(
+  categories.map(cat => [cat, sorted.filter(a => a.data.category === cat)])
+);
+---
+
+<BaseLayout
+  title="Blog — Wade Nairn"
+  description="Articles on frontend engineering, creative development, AI-assisted coding, and building for Australian users."
+>
+  <section class="page-header">
+    <h1>Blog</h1>
+  </section>
+
+  <div class="articles-body">
+    {categories.map(cat => {
+      const articles = articlesByCategory[cat];
+      if (!articles.length) return null;
+      return (
+        <section class="category-section" id={cat.toLowerCase().replace(' ', '-')}>
+          <span class="category-label">{cat}</span>
+          <div class="article-list">
+            {articles.map(article => (
+              <a href={articleHref(article)} class="article-row">
+                <div class="article-text">
+                  <h2 class="article-title">{article.data.title}</h2>
+                  <p class="article-desc">{article.data.description}</p>
+                </div>
+                <span class="article-arrow" aria-hidden="true">→</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      );
+    })}
+  </div>
+</BaseLayout>
+
+<style>
+  .page-header {
+    background: #0d0d0d;
+    padding: 20vh 4rem 5rem;
+    opacity: 0;
+    animation: fade-in 0.6s ease-out 1s forwards;
+  }
+
+  .page-header h1 {
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem;
+  }
+
+  .page-sub {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .articles-body {
+    background: #0d0d0d;
+    padding: 0 4rem 25vh;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    opacity: 0;
+    animation: fade-in 0.6s ease-out 1s forwards;
+  }
+
+  .category-section {
+    max-width: 680px;
+  }
+
+  .category-label {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1.25rem;
+  }
+
+  .article-list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .article-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+
+  .article-row:hover { opacity: 0.7; }
+
+  .article-text { flex: 1; min-width: 0; }
+
+  .article-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 0.25rem;
+    line-height: 1.4;
+  }
+
+  .article-desc {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .article-arrow {
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  @keyframes fade-in { to { opacity: 1; } }
+
+  @media (max-width: 640px) {
+    .page-header { padding: 20vh 3rem 3rem; }
+    .articles-body { padding: 0 3rem 15vh; }
+    .article-desc { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-header,
+    .articles-body { animation: none; opacity: 1; }
+  }
+</style>

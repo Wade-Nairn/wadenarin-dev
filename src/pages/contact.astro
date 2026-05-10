@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Contact — Wade Nairn">
+  <section class="contact-section">
+    <h1 class="contact-heading">Contact</h1>
+    <p class="contact-sub">Get in touch — I'll get back to you shortly.</p>
+
+    <form
+      action="https://api.web3forms.com/submit"
+      method="POST"
+      class="contact-form"
+    >
+      <input type="hidden" name="access_key" value="494e5493-8cef-4a9a-af14-a077cfee7311" />
+      <input type="hidden" name="subject" value="New message from wade-nairn.com" />
+      <input type="checkbox" name="botcheck" style="display:none" />
+
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required autocomplete="name" />
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required autocomplete="email" />
+      </div>
+
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="6" required></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Send message</button>
+    </form>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-section {
+    min-height: 100vh;
+    background: #0d0d0d;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 20vh 4rem 4rem;
+    opacity: 0;
+    animation: fade-in 0.6s ease-out 1s forwards;
+  }
+
+  @keyframes fade-in {
+    to { opacity: 1; }
+  }
+
+  .contact-heading {
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem;
+  }
+
+  .contact-sub {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: clamp(0.875rem, 1.5vw, 1.1rem);
+    margin: 0 0 3rem;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 520px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  label {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  input,
+  textarea {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    color: white;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s ease;
+    font-family: inherit;
+    resize: vertical;
+  }
+
+  input:focus,
+  textarea:focus {
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+  }
+
+  .submit-btn {
+    align-self: flex-start;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 0.75rem 1.75rem;
+    transition: border-color 0.2s ease, color 0.2s ease;
+    font-family: inherit;
+  }
+
+  .submit-btn:hover {
+    border-color: rgba(255, 255, 255, 0.6);
+    color: white;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-section {
+      animation: none;
+      opacity: 1;
+    }
+  }
+</style>

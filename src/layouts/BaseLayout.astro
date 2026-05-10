@@ -1,0 +1,243 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  ogType?: string;
+  image?: string;
+}
+
+const {
+  title,
+  description = 'Software engineer based in Brisbane, Australia. Frontend specialist with experience across startups, agencies, and enterprise teams.',
+  ogType = 'website',
+  image,
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+const canonicalURL = Astro.url.href;
+---
+
+<!DOCTYPE html>
+<html lang="en-AU">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="en_AU" />
+    {image && <meta property="og:image" content={image} />}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {image && <meta name="twitter:image" content={image} />}
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <slot name="head" />
+  </head>
+  <body class="bg-[#0d0d0d] text-slate-100 min-h-screen antialiased">
+    <nav class="fixed-nav">
+      {currentPath !== '/' && <a href="/">Home</a>}
+      {!currentPath.startsWith('/articles') && <a href="/articles">Blog</a>}
+      {currentPath !== '/contact' && <a href="/contact">Contact</a>}
+    </nav>
+
+    <div class="frame-masks" aria-hidden="true">
+      <div class="frame-mask-top"></div>
+      <div class="frame-mask-bottom"></div>
+      <div class="frame-mask-left"></div>
+      <div class="frame-mask-right"></div>
+    </div>
+
+    <div class="frame-border" aria-hidden="true">
+      <div class="frame-top"></div>
+      <div class="frame-right"></div>
+      <div class="frame-bottom"></div>
+      <div class="frame-left"></div>
+    </div>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="border-t border-white/10 bg-[#0d0d0d]">
+      <div class="px-16 pt-10 pb-16 flex flex-col gap-1.5">
+        <p class="text-white/55 text-sm">
+          Wade Nairn · Software Engineer · Brisbane, Australia
+        </p>
+        <p class="text-white/45 text-xs">
+          Software Engineering &amp; Creative Development
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .fixed-nav {
+    position: fixed;
+    top: 48px;
+    right: 48px;
+    z-index: 101;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    opacity: 0;
+    animation: fade-in 0.6s ease-out 1s forwards;
+  }
+
+  .fixed-nav a {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.3rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .fixed-nav a:hover {
+    color: white;
+  }
+
+  @keyframes fade-in {
+    to { opacity: 1; }
+  }
+
+  /* Masks: cover the outer gap AND fade content just inside the border */
+  .frame-masks {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 99;
+  }
+
+  .frame-mask-top,
+  .frame-mask-bottom,
+  .frame-mask-left,
+  .frame-mask-right {
+    position: absolute;
+  }
+
+  /* Top/bottom: 24px solid (gap cover) + 32px gradient (inner fade) */
+  .frame-mask-top {
+    top: 0; left: 0; right: 0;
+    height: 56px;
+    background: linear-gradient(to bottom, #0d0d0d 43%, transparent);
+  }
+
+  .frame-mask-bottom {
+    bottom: 0; left: 0; right: 0;
+    height: 56px;
+    background: linear-gradient(to top, #0d0d0d 43%, transparent);
+  }
+
+  /* Left/right: solid gap cover only (content already has px-16 clearance) */
+  .frame-mask-left {
+    top: 0; bottom: 0; left: 0;
+    width: 24px;
+    background: #0d0d0d;
+  }
+
+  .frame-mask-right {
+    top: 0; bottom: 0; right: 0;
+    width: 24px;
+    background: #0d0d0d;
+  }
+
+  .frame-border {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .frame-top,
+  .frame-right,
+  .frame-bottom,
+  .frame-left {
+    position: absolute;
+    background: white;
+  }
+
+  /* Top: left corner → right */
+  .frame-top {
+    top: 24px;
+    left: 24px;
+    right: 24px;
+    height: 2px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation: frame-draw-h 1s ease-out forwards;
+  }
+
+  /* Right: top corner → down */
+  .frame-right {
+    top: 24px;
+    right: 24px;
+    bottom: 24px;
+    width: 2px;
+    transform: scaleY(0);
+    transform-origin: center top;
+    animation: frame-draw-v 1s ease-out forwards;
+  }
+
+  /* Bottom: right corner → left */
+  .frame-bottom {
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    height: 2px;
+    transform: scaleX(0);
+    transform-origin: right center;
+    animation: frame-draw-h 1s ease-out forwards;
+  }
+
+  /* Left: bottom corner → up */
+  .frame-left {
+    top: 24px;
+    left: 24px;
+    bottom: 24px;
+    width: 2px;
+    transform: scaleY(0);
+    transform-origin: center bottom;
+    animation: frame-draw-v 1s ease-out forwards;
+  }
+
+  @media (max-width: 768px) {
+    .fixed-nav {
+      flex-direction: row;
+      gap: 20px;
+    }
+
+    /* Extend top mask to cover the height of the nav row */
+    .frame-mask-top {
+      height: 125px;
+      background: linear-gradient(to bottom, #0d0d0d 45%, transparent);
+    }
+  }
+
+  @keyframes frame-draw-h { to { transform: scaleX(1); } }
+  @keyframes frame-draw-v { to { transform: scaleY(1); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .frame-top,
+    .frame-right,
+    .frame-bottom,
+    .frame-left {
+      animation: none;
+      transform: none;
+    }
+    .fixed-nav {
+      animation: none;
+      opacity: 1;
+    }
+  }
+</style>
