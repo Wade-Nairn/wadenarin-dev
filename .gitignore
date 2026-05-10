@@ -15,3 +15,8 @@ node_modules/
 
 # logs
 npm-debug.log*
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
