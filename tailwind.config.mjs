@@ -3,6 +3,11 @@ export default {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,ts,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Archivo', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        display: ['Archivo Black', 'Archivo', 'Helvetica', 'sans-serif'],
+        mono: ['DM Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+      },
       typography: {
         invert: {
           css: {

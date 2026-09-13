@@ -22,6 +22,21 @@ const canonicalURL = Astro.url.href;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0d0d0d" />
+
+    <!--
+      Fonts first: this page is nothing but type. `wght@400..900` requests one
+      variable Archivo (~45KB) rather than five statics (~90KB); the design only
+      ever uses 400/800/900 and DM Mono 400. Both preconnects matter — the woff2
+      fetch on gstatic can't start until the googleapis CSS lands.
+      `display=swap` is safe here because the 1s frame draw hides the swap.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..900&family=Archivo+Black&family=DM+Mono&display=swap"
+    />
 
     <!-- Google tag (gtag.js) -->
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-ZX84MMMEQ9"></script>
@@ -53,7 +68,7 @@ const canonicalURL = Astro.url.href;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <slot name="head" />
   </head>
-  <body class="bg-[#0d0d0d] text-slate-100 min-h-screen antialiased">
+  <body class="min-h-screen antialiased">
     <nav class="fixed-nav">
       {currentPath !== '/' && <a href="/">Home</a>}
       {!currentPath.startsWith('/articles') && <a href="/articles">Blog</a>}
@@ -78,18 +93,77 @@ const canonicalURL = Astro.url.href;
       <slot />
     </main>
 
-    <footer class="border-t border-white/10 bg-[#0d0d0d]">
-      <div class="px-16 pt-10 pb-16 flex flex-col gap-1.5">
-        <p class="text-white/55 text-sm">
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        <p class="site-footer-line">
           Wade Nairn · Software Engineer · Brisbane, Australia
         </p>
-        <p class="text-white/45 text-xs">
+        <p class="site-footer-sub">
           Software Engineering &amp; Creative Development
         </p>
       </div>
     </footer>
   </body>
 </html>
+
+<style is:global>
+  /*
+    Design tokens for the "Kinetic Stack" design. Must be `is:global` — Astro's
+    scoping hash never lands on `:root`, so a `:root` block inside a plain
+    scoped <style> silently does nothing.
+  */
+  :root {
+    /*
+      Ground is #0d0d0d, NOT the design spec's #0a0a0a: the four frame masks
+      below hardcode #0d0d0d and must keep matching the page exactly. The
+      difference between the two is imperceptible; a mismatch would not be.
+    */
+    --bg: #0d0d0d;
+    --bg-rgb: 13, 13, 13; /* for rgba() interpolation in the hero scrim */
+
+    --ink-fg: #f2f0ed;    /* primary text, nav, hero name */
+    --ink-muted: #cfcdca; /* hero caption, card host line, footer line 1 */
+    --ink-body: #c9c7c4;  /* About prose */
+    --ink-blurb: #a9a7a4; /* project blurb */
+    --ink-meta: #8f8d8a;  /* row meta, card meta, link hover */
+    --ink-label: #8a8a8a; /* section labels */
+    --ink-faint: #5f5d5b; /* projects aside, footer line 2 */
+
+    --rule: rgba(255, 255, 255, 0.14);
+    --wash-row: rgba(255, 255, 255, 0.04);
+    --wash-card: rgba(255, 255, 255, 0.05);
+
+    --stroke-1: rgba(255, 255, 255, 0.16);
+    --stroke-2: rgba(255, 255, 255, 0.13);
+    --stroke-3: rgba(255, 255, 255, 0.1);
+    --stroke-4: rgba(255, 255, 255, 0.08);
+
+    /*
+      28px floor = the 24px .frame-mask-left/right width + 4px clearance. The
+      design spec's 20px floor would let the masks, which are solid and painted
+      *over* content, cover ~4px of text below a 480px viewport.
+    */
+    --pad-x: clamp(28px, 5vw, 72px);
+    --pad-y: clamp(72px, 12vh, 160px);
+    --max-section: 1240px;
+    --max-hero: 1100px;
+    --measure: 620px;
+
+    --font-display: 'Archivo Black', 'Archivo', Helvetica, sans-serif;
+    --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --ease-rise: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink-fg);
+  }
+
+  ::selection {
+    background: var(--ink-fg);
+    color: var(--bg);
+  }
+</style>
 
 <style>
   .fixed-nav {
@@ -100,24 +174,71 @@ const canonicalURL = Astro.url.href;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 12px;
+    gap: 8px;
     opacity: 0;
     animation: fade-in 0.6s ease-out 1s forwards;
+    /*
+      Keeps the nav legible when near-white content scrolls under it. The nav
+      sits at 48/48, clearing the white frame bars (top y 24-26, right x W-26
+      to W-24) by 22px on both axes, so it never inverts against the frame.
+      Do not add `isolation: isolate` to a wrapper — that gives the nav an empty
+      backdrop and makes the blend a no-op.
+    */
+    mix-blend-mode: difference;
   }
 
   .fixed-nav a {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 1.3rem;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-fg);
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
   .fixed-nav a:hover {
-    color: white;
+    color: var(--ink-meta);
   }
 
   @keyframes fade-in {
     to { opacity: 1; }
+  }
+
+  /* Footer — the closing element of the page */
+  .site-footer {
+    border-top: 1px solid var(--rule);
+    background: var(--bg);
+  }
+
+  .site-footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: var(--max-section);
+    /*
+      72px bottom floor, not 48px: at a 640px-tall viewport the last line would
+      otherwise sit inside the 56px .frame-mask-bottom gradient and get dimmed.
+    */
+    padding: clamp(40px, 6vh, 72px) var(--pad-x) clamp(72px, 8vh, 96px);
+  }
+
+  .site-footer-line,
+  .site-footer-sub {
+    margin: 0;
+    font-family: var(--font-mono);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .site-footer-line {
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  .site-footer-sub {
+    font-size: 11px;
+    color: var(--ink-faint);
   }
 
   /* Masks: cover the outer gap AND fade content just inside the border */
