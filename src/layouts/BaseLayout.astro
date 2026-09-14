@@ -139,11 +139,15 @@ const canonicalURL = Astro.url.href;
     --stroke-4: rgba(255, 255, 255, 0.08);
 
     /*
-      28px floor = the 24px .frame-mask-left/right width + 4px clearance. The
-      design spec's 20px floor would let the masks, which are solid and painted
-      *over* content, cover ~4px of text below a 480px viewport.
+      Measured against the frame, not the masks: the border bar sits at 24px
+      and is 2px thick, so its inner edge is at 26px and content must clear
+      *that* to look inset rather than pinned to the line.
+
+      8vw reaches the 72px ceiling at exactly 900px, so desktop keeps its gutter
+      and everything below scales with the viewport. The 44px floor takes over
+      at ~550px, leaving 18px of clear air beside the border on a phone.
     */
-    --pad-x: clamp(28px, 5vw, 72px);
+    --pad-x: clamp(44px, 8vw, 72px);
     --pad-y: clamp(72px, 12vh, 160px);
     --max-section: 1240px;
     --max-hero: 1100px;
