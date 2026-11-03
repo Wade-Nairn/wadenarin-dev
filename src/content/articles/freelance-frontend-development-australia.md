@@ -45,7 +45,7 @@ The Australian freelance market for frontend developers sits at a comfortable si
 
 ## Setting Your Rate
 
-For a detailed breakdown of Australian freelance rates by experience level, see [Frontend Developer Rates in Australia 2025](/articles/frontend-developer-rates-australia-2025). The strategic point worth making here is about *how* to set and present your rate, not just the number.
+For a detailed breakdown of Australian freelance rates by experience level, see [Frontend Developer Rates in Australia 2025](/articles/frontend-developer-rates-australia-2025/). The strategic point worth making here is about *how* to set and present your rate, not just the number.
 
 **Don't negotiate against yourself before the conversation starts.** Many freelancers — particularly those newer to independent work — quote below market because they assume the client can't afford the market rate. This is rarely true for clients who are seriously evaluating freelance developers. If a client can't afford your rate, find out by quoting correctly and having the conversation, not by preemptively discounting.
 

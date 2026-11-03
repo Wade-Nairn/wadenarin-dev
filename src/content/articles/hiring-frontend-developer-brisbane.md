@@ -40,7 +40,7 @@ This is the first decision to make, because it shapes everything that follows.
 
 **Permanent hire** makes sense if you have ongoing, full-time work for a developer. The upside is continuity, deep product knowledge, and team cohesion. The downside is fixed overhead — salary, super, leave entitlements, and onboarding time — regardless of your project pipeline.
 
-**Freelance contractor** works well for project-based work or when you need to scale capacity temporarily. A good Brisbane freelancer can hit the ground running with minimal onboarding and transition off cleanly when the project wraps. You'll pay a day rate premium (see [Frontend Developer Rates in Australia 2025](/articles/frontend-developer-rates-australia-2025)), but you avoid permanent overhead. This is the right model for most small businesses and startups that don't yet have consistent ongoing dev work.
+**Freelance contractor** works well for project-based work or when you need to scale capacity temporarily. A good Brisbane freelancer can hit the ground running with minimal onboarding and transition off cleanly when the project wraps. You'll pay a day rate premium (see [Frontend Developer Rates in Australia 2025](/articles/frontend-developer-rates-australia-2025/)), but you avoid permanent overhead. This is the right model for most small businesses and startups that don't yet have consistent ongoing dev work.
 
 **Agency** is the right call when you need a full team — design, frontend, backend, and project management — and don't want to manage multiple contractors yourself. The tradeoff is cost and communication overhead. Agencies add a margin on top of the developer's rate, and you're typically not working directly with the person writing your code.
 
@@ -114,7 +114,7 @@ For any serious candidate, a paid practical task is worth doing. A realistic two
 
 ## What to Pay a Frontend Developer in Brisbane
 
-Rates vary significantly by experience level and employment type. For a detailed breakdown, see [Frontend Developer Rates in Australia 2025](/articles/frontend-developer-rates-australia-2025), but as a quick reference for Brisbane:
+Rates vary significantly by experience level and employment type. For a detailed breakdown, see [Frontend Developer Rates in Australia 2025](/articles/frontend-developer-rates-australia-2025/), but as a quick reference for Brisbane:
 
 - **Junior (0–2 years), permanent:** $62,000 – $82,000 total package
 - **Mid-level (2–5 years), permanent:** $85,000 – $110,000 total package

@@ -19,7 +19,7 @@ This article works through the comparison systematically: salaries, cost of livi
 
 ## Salaries: Sydney Leads, but Not by as Much as You'd Think
 
-Let's start with the number everyone looks at first. As of 2025, Sydney frontend developer salaries sit at a meaningful premium over Brisbane, with Melbourne close behind. For a detailed breakdown by experience level, see [Frontend Developer Rates in Australia 2025](/articles/frontend-developer-rates-australia-2025), but the headline figures:
+Let's start with the number everyone looks at first. As of 2025, Sydney frontend developer salaries sit at a meaningful premium over Brisbane, with Melbourne close behind. For a detailed breakdown by experience level, see [Frontend Developer Rates in Australia 2025](/articles/frontend-developer-rates-australia-2025/), but the headline figures:
 
 - **Sydney senior frontend developer:** $125,000 – $165,000
 - **Melbourne senior frontend developer:** $120,000 – $158,000

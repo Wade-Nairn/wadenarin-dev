@@ -4,6 +4,7 @@ interface Props {
   description?: string;
   ogType?: string;
   image?: string;
+  noindex?: boolean;
 }
 
 const {
@@ -11,6 +12,7 @@ const {
   description = 'Software engineer based in Brisbane, Australia. Frontend specialist with experience across startups, agencies, and enterprise teams.',
   ogType = 'website',
   image,
+  noindex = false,
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
@@ -49,7 +51,9 @@ const canonicalURL = Astro.url.href;
 
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalURL} />
+    {noindex
+      ? <meta name="robots" content="noindex" />
+      : <link rel="canonical" href={canonicalURL} />}
 
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />
@@ -71,8 +75,8 @@ const canonicalURL = Astro.url.href;
   <body class="min-h-screen antialiased">
     <nav class="fixed-nav">
       {currentPath !== '/' && <a href="/">Home</a>}
-      {!currentPath.startsWith('/articles') && <a href="/articles">Blog</a>}
-      {currentPath !== '/contact' && <a href="/contact">Contact</a>}
+      {!currentPath.startsWith('/articles') && <a href="/articles/">Blog</a>}
+      {currentPath !== '/contact/' && <a href="/contact/">Contact</a>}
     </nav>
 
     <div class="frame-masks" aria-hidden="true">

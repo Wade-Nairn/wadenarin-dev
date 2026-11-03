@@ -8,6 +8,8 @@ const articles = defineCollection({
     publishOrder: z.number(),
     category: z.enum(['General', 'Technical', 'AI Coding', 'Creative', 'AI Agents']),
     date: z.string(),
+    // Set when an article is substantively revised; feeds dateModified + sitemap lastmod.
+    updated: z.string().optional(),
   }),
 });
 

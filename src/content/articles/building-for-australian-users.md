@@ -99,7 +99,7 @@ Key WCAG 2.1 AA requirements for frontend developers:
 - Pages must work at 200% zoom without loss of functionality
 - Error messages must be programmatically associated with their inputs
 
-For a detailed implementation guide, see [Building Accessible React Components for WCAG 2.1 AA](/articles/accessible-react-components-wcag-2-1).
+For a detailed implementation guide, see [Building Accessible React Components for WCAG 2.1 AA](/articles/accessible-react-components-wcag-2-1/).
 
 ### Who Is Most Exposed
 

@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 
 function articleHref(entry: { slug: string }) {
   const slug = entry.slug.replace(/^\/?articles\//, '');
-  return `/articles/${slug}`;
+  return `/articles/${slug}/`;
 }
 
 const allArticles = await getCollection('articles');

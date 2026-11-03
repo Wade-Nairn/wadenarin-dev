@@ -6,9 +6,29 @@ interface Props {
   description: string;
   category: string;
   date: string;
+  updated?: string;
+  related: { title: string; description: string; href: string }[];
 }
 
-const { title, description, category, date } = Astro.props;
+const { title, description, category, date, updated, related } = Astro.props;
+const modified = updated ?? date;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: date,
+  dateModified: modified,
+  articleSection: category,
+  inLanguage: 'en-AU',
+  mainEntityOfPage: Astro.url.href,
+  author: {
+    '@type': 'Person',
+    name: 'Wade Nairn',
+    url: new URL('/', Astro.site).href,
+  },
+};
 
 const formattedDate = new Date(date).toLocaleDateString('en-AU', {
   year: 'numeric',
@@ -18,9 +38,16 @@ const formattedDate = new Date(date).toLocaleDateString('en-AU', {
 ---
 
 <BaseLayout title={`${title} — Wade Nairn`} description={description} ogType="article">
+  <Fragment slot="head">
+    <meta property="article:published_time" content={date} />
+    <meta property="article:modified_time" content={modified} />
+    <meta property="article:section" content={category} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  </Fragment>
+
   <div class="article-wrap">
     <div class="article-header">
-      <a href="/articles" class="back-link">← All articles</a>
+      <a href="/articles/" class="back-link">← All articles</a>
 
       <div class="article-meta">
         <span class="article-category">{category}</span>
@@ -36,8 +63,24 @@ const formattedDate = new Date(date).toLocaleDateString('en-AU', {
       <slot />
     </div>
 
+    {related.length > 0 && (
+      <nav class="related" aria-labelledby="related-heading">
+        <h2 id="related-heading" class="related-heading">Related articles</h2>
+        <ul class="related-list">
+          {related.map(article => (
+            <li>
+              <a href={article.href} class="related-link">
+                <span class="related-title">{article.title}</span>
+                <span class="related-desc">{article.description}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+
     <div class="article-footer">
-      <a href="/articles" class="back-link">← All articles</a>
+      <a href="/articles/" class="back-link">← All articles</a>
     </div>
   </div>
 </BaseLayout>
@@ -212,8 +255,53 @@ const formattedDate = new Date(date).toLocaleDateString('en-AU', {
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
 
-  .article-footer {
+  .related {
     margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .related-heading {
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 0 1.5rem;
+  }
+
+  .related-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .related-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    text-decoration: none;
+  }
+
+  .related-title {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    transition: color 0.15s ease;
+  }
+
+  .related-link:hover .related-title { color: white; text-decoration: underline; text-underline-offset: 3px; }
+
+  .related-desc {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.6;
+  }
+
+  .article-footer {
+    margin-top: 3rem;
     padding-top: 2rem;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
   }

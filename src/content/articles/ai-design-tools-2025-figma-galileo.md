@@ -83,7 +83,7 @@ It's also important to note that Galileo generates *designs*, not *code*. The de
 
 ## v0 by Vercel
 
-v0 generates React components from text or image descriptions — it sits on the code side of the design-to-code boundary rather than the design side. We covered it in detail in [Building UI with v0 by Vercel](/articles/building-ui-v0-vercel-guide), but the key comparison point:
+v0 generates React components from text or image descriptions — it sits on the code side of the design-to-code boundary rather than the design side. We covered it in detail in [Building UI with v0 by Vercel](/articles/building-ui-v0-vercel-guide/), but the key comparison point:
 
 v0 generates **code** (React + Tailwind + shadcn) directly, skipping the design tool step entirely. This makes it most useful for developers who want to go straight from idea to component, and for projects that don't have a designer involved.
 

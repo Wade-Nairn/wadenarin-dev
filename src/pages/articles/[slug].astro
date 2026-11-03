@@ -3,18 +3,43 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
 export async function getStaticPaths() {
+  // Defined in here because Astro hoists getStaticPaths out of frontmatter scope.
+  const RELATED_COUNT = 3;
+  const articleSlug = (entry: CollectionEntry<'articles'>) =>
+    entry.slug.replace(/^\/?articles\//, '');
+
   const articles = await getCollection('articles');
-  return articles.map(entry => ({
-    params: { slug: entry.slug.replace(/^\/?articles\//, '') },
-    props: { entry },
-  }));
+  return articles.map(entry => {
+    // Same category first, nearest in publish order; other categories only
+    // pad the list out if a category is too small to fill it.
+    const distance = (other: CollectionEntry<'articles'>) =>
+      Math.abs(other.data.publishOrder - entry.data.publishOrder);
+    const others = articles.filter(other => other.id !== entry.id);
+    const sameCategory = others
+      .filter(other => other.data.category === entry.data.category)
+      .sort((a, b) => distance(a) - distance(b));
+    const rest = others
+      .filter(other => other.data.category !== entry.data.category)
+      .sort((a, b) => distance(a) - distance(b));
+    const related = [...sameCategory, ...rest].slice(0, RELATED_COUNT).map(other => ({
+      title: other.data.title,
+      description: other.data.description,
+      href: `/articles/${articleSlug(other)}/`,
+    }));
+
+    return {
+      params: { slug: articleSlug(entry) },
+      props: { entry, related },
+    };
+  });
 }
 
 interface Props {
   entry: CollectionEntry<'articles'>;
+  related: { title: string; description: string; href: string }[];
 }
 
-const { entry } = Astro.props;
+const { entry, related } = Astro.props;
 const { Content } = await entry.render();
 ---
 
@@ -23,6 +48,8 @@ const { Content } = await entry.render();
   description={entry.data.description}
   category={entry.data.category}
   date={entry.data.date}
+  updated={entry.data.updated}
+  related={related}
 >
   <Content />
 </ArticleLayout>
